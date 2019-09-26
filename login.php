@@ -21,16 +21,17 @@
     <div class="login-page">
         <div class="form">
             <form class="register-form">
-                <input type="text" placeholder="name"/>
-                <input type="password" placeholder="password"/>
-                <input type="text" placeholder="email address"/>
-                <button>create</button>
-                <p class="message">Already registered? <a href="#">Sign In</a></p>
+                <input type="text" placeholder="Nom d'utilisateur"/>
+                <input type="password" placeholder="Mot de passe"/>
+                <input type="password" placeholder="Confirmer mot de passe"/>
+                <input type="text" placeholder="Adresse email"/>
+                <button>créer</button>
+                <p class="message">Déjà inscrit ? <a href="#">Se connecter</a></p>
             </form>
             <form class="login-form">
-                <input type="text" placeholder="username"/>
-                <input type="password" placeholder="password"/>
-                <button>login</button>
+                <input type="text" placeholder="Nom d'utilisateur"/>
+                <input type="password" placeholder="Mot de passe"/>
+                <button>se connecter</button>
                 <p class="message">Vous n'êtes pas inscrit ? <a href="#">Créer un compte</a></p>
             </form>
         </div>
