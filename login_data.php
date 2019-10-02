@@ -5,7 +5,19 @@
  * Date: 02.10.2019
  * Time: 11:52
  */
+
+session_start();
+
+if (empty($_POST['uLogin'])||empty($_POST['uPass']))
+{
+    header("Location:login.php");
+}
+if (($_POST['uLogin'] != "Toto") || ($_POST['uPass'] != "1234"))
+{
+    header("Location:login.php?uLogin=" . $_POST['uLogin'] . "&qErr=Erreur de login");
+}
 ?>
+
 
 <!doctype html>
 <html lang="fr">

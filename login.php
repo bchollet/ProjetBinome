@@ -20,14 +20,18 @@
 <body>
     <div class="login-page">
         <div class="form">
+            <?php /* if (isset($_GET['qErr']))
+            {
+                echo('<p class="alert alert-danger">' . $_GET['qErr'] . '</p>');
+            } */
+            ?>
             <!-- Creation of the post method in the form -->
             <form class="register-form" method="post" action="login_data.php">
                 <input type="text" placeholder="Nom d'utilisateur" name="uLogin" value="<?php echo @$_GET['uLogin']; ?>"/>
-                <input type="password" placeholder="Mot de passe"/>
-                <input type="password" placeholder="Confirmer mot de passe"/>
-                <input type="text" placeholder="Adresse email"/>
+                <input type="password" placeholder="Mot de passe" name="uPass" value="<?php echo @$_GET['uPass']; ?>"/>
+                <input type="password" placeholder="Confirmer mot de passe" name="uConfPass" value="<?php echo @$_GET['uConfPass']; ?>"/>
+                <input type="text" placeholder="Adresse email" name="uMail" value="<?php echo @$_GET['uMail']; ?>"/>
                 <button type="submit">créer</button>
-                <button>ok</button>
                 <p class="message">Déjà inscrit ? <a href="#">Se connecter</a></p>
             </form>
             <form class="login-form">
