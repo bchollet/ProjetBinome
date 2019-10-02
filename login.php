@@ -20,12 +20,14 @@
 <body>
     <div class="login-page">
         <div class="form">
-            <form class="register-form">
-                <input type="text" placeholder="Nom d'utilisateur"/>
+            <!-- Creation of the post method in the form -->
+            <form class="register-form" method="post" action="login_data.php">
+                <input type="text" placeholder="Nom d'utilisateur" name="uLogin" value="<?php echo @$_GET['uLogin']; ?>"/>
                 <input type="password" placeholder="Mot de passe"/>
                 <input type="password" placeholder="Confirmer mot de passe"/>
                 <input type="text" placeholder="Adresse email"/>
-                <button>créer</button>
+                <button type="submit">créer</button>
+                <button>ok</button>
                 <p class="message">Déjà inscrit ? <a href="#">Se connecter</a></p>
             </form>
             <form class="login-form">
@@ -39,4 +41,9 @@
 <script type="text/javascript" src="./script/login.js"></script>
 </body>
 </html>
+<?php
+
+
+
+?>
 
