@@ -12,10 +12,7 @@ if (empty($_POST['uLogin'])||empty($_POST['uPass']))
 {
     header("Location:login.php");
 }
-if (($_POST['uLogin'] != "Toto") || ($_POST['uPass'] != "1234"))
-{
-    header("Location:login.php?uLogin=" . $_POST['uLogin'] . "&qErr=Erreur de login");
-}
+
 ?>
 
 
@@ -32,6 +29,10 @@ if (($_POST['uLogin'] != "Toto") || ($_POST['uPass'] != "1234"))
 </head>
 <body>
     <p>
-        <?= @$_POST['uLogin'];?>
+       Bonjour <?= @$_POST['uLogin'];?> vous allez recevoir un mail pour valider votre compte
+        <br>
+        <a href="login.php">
+            <button>Retour menu</button>
+        </a>
     </p>
 </body>

@@ -20,13 +20,9 @@
 <body>
     <div class="login-page">
         <div class="form">
-            <?php /* if (isset($_GET['qErr']))
-            {
-                echo('<p class="alert alert-danger">' . $_GET['qErr'] . '</p>');
-            } */
-            ?>
+
             <!-- Creation of the post method in the form -->
-            <form class="register-form" method="post" action="login_data.php">
+            <form class="register-form" method="post" action="login_data_newUser.php">
                 <input type="text" placeholder="Nom d'utilisateur" name="uLogin" value="<?php echo @$_GET['uLogin']; ?>"/>
                 <input type="password" placeholder="Mot de passe" name="uPass" value="<?php echo @$_GET['uPass']; ?>"/>
                 <input type="password" placeholder="Confirmer mot de passe" name="uConfPass" value="<?php echo @$_GET['uConfPass']; ?>"/>
@@ -34,10 +30,15 @@
                 <button type="submit">créer</button>
                 <p class="message">Déjà inscrit ? <a href="#">Se connecter</a></p>
             </form>
-            <form class="login-form">
-                <input type="text" placeholder="Nom d'utilisateur"/>
-                <input type="password" placeholder="Mot de passe"/>
-                <button>se connecter</button>
+            <form class="login-form" method="post" action="login_data_connection.php">
+                <?php  if (isset($_GET['qErr']))
+                {
+                    echo('<p class="alert alert-danger">' . $_GET['qErr'] . '</p>');
+                }
+                ?>
+                <input type="text" placeholder="Nom d'utilisateur" name="trueLogin" value="<?php echo @$_GET['trueLogin']; ?>"/>
+                <input type="password" placeholder="Mot de passe" name="truePass" value="<?php echo @$_GET['truePass']; ?>"/>
+                <button type="submit">se connecter</button>
                 <p class="message">Vous n'êtes pas inscrit ? <a href="#">Créer un compte</a></p>
             </form>
         </div>
