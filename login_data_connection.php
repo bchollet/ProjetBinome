@@ -6,15 +6,19 @@
  * Time: 14:11
  */
 session_start();
+include 'ConnectDB.php';
+$result = $myPDO->query("SELECT username FROM users where username = '".$_POST['trueLogin']."'");
+
+
 
 if (empty($_POST['trueLogin'])||empty($_POST['truePass']))
 {
     header("Location:login.php");
 }
-if (($_POST['trueLogin'] != "Toto") || ($_POST['truePass'] != "1234"))
+/*if (($_POST['trueLogin'] != "") || ($_POST['truePass'] != ""))
 {
     header("Location:login.php?uLogin=" . $_POST['trueLogin'] . "&qErr=Erreur de login");
-}
+}*/
 ?>
 <!doctype html>
 <html lang="fr">
