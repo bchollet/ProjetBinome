@@ -7,10 +7,14 @@
  */
 
 session_start();
+include 'connectDB.php';
 
 if (empty($_POST['uLogin'])||empty($_POST['uPass']))
 {
     header("Location:login.php");
+}
+else {
+    $result = $myPDO->query("INSERT INTO users (id, username, password, email, admin) VALUES (null,'" . $_POST['uLogin'] . "', '" . $_POST['uPass'] . "', '" . $_POST['uMail'] . "', 0)");
 }
 
 ?>
