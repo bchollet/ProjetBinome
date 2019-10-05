@@ -2,20 +2,21 @@
 /**
  * Created by PhpStorm.
  * User: Milos.CEROVIC
- * Date: 02.10.2019
- * Time: 11:52
+ * Date: 03.10.2019
+ * Time: 14:11
  */
 
-session_start();
+include 'ConnectDB.php';
+$result = $myPDO->query("SELECT username FROM users where username = '" . $_POST['trueLogin'] . "'");
 
-if (empty($_POST['uLogin'])||empty($_POST['uPass']))
+
+
+if (empty($_POST['trueLogin']) || empty($_POST['truePass']))
 {
-    header("Location:login.php");
+    header("Location:index.php");
 }
 
 ?>
-
-
 <!doctype html>
 <html lang="fr">
 <head>
@@ -29,10 +30,11 @@ if (empty($_POST['uLogin'])||empty($_POST['uPass']))
 </head>
 <body>
     <p>
-       Bonjour <?= @$_POST['uLogin'];?> vous allez recevoir un mail pour valider votre compte
+       Bonjour <?= @$_POST['trueLogin'];?> ca va bro
         <br>
-        <a href="login.php">
+        <a href="index.php">
             <button>Retour menu</button>
         </a>
     </p>
 </body>
+

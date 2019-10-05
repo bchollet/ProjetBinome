@@ -2,24 +2,22 @@
 /**
  * Created by PhpStorm.
  * User: Milos.CEROVIC
- * Date: 03.10.2019
- * Time: 14:11
+ * Date: 02.10.2019
+ * Time: 11:52
  */
-session_start();
-include 'ConnectDB.php';
-$result = $myPDO->query("SELECT username FROM users where username = '".$_POST['trueLogin']."'");
 
+include 'connectDB.php';
 
-
-if (empty($_POST['trueLogin'])||empty($_POST['truePass']))
+if (empty($_POST['uLogin']) || empty($_POST['uPass']))
 {
-    header("Location:login.php");
+    header("Location:index.php");
 }
-/*if (($_POST['trueLogin'] != "") || ($_POST['truePass'] != ""))
-{
-    header("Location:login.php?uLogin=" . $_POST['trueLogin'] . "&qErr=Erreur de login");
-}*/
+else {
+    $result = $myPDO->query("INSERT INTO users (id, username, password, email, admin) VALUES (null,'" . $_POST['uLogin'] . "', '" . $_POST['uPass'] . "', '" . $_POST['uMail'] . "', 0)");
+}
+
 ?>
+
 <!doctype html>
 <html lang="fr">
 <head>
@@ -33,11 +31,10 @@ if (empty($_POST['trueLogin'])||empty($_POST['truePass']))
 </head>
 <body>
     <p>
-       Bonjour <?= @$_POST['trueLogin'];?> ca va bro
+       Bonjour <?= @$_POST['uLogin'];?> vous allez recevoir un mail pour valider votre compte
         <br>
-        <a href="login.php">
+        <a href="index.php">
             <button>Retour menu</button>
         </a>
     </p>
 </body>
-

@@ -20,24 +20,22 @@
 <body>
     <div class="login-page">
         <div class="form">
-
-            <!-- Creation of the post method in the form -->
-            <form class="register-form" method="post" action="login_data_newUser.php">
-                <input type="text" placeholder="Nom d'utilisateur" name="uLogin" value="<?php echo @$_GET['uLogin']; ?>"/>
-                <input type="password" placeholder="Mot de passe" name="uPass" value="<?php echo @$_GET['uPass']; ?>"/>
-                <input type="password" placeholder="Confirmer mot de passe" name="uConfPass" value="<?php echo @$_GET['uConfPass']; ?>"/>
-                <input type="text" placeholder="Adresse email" name="uMail" value="<?php echo @$_GET['uMail']; ?>"/>
+            <form class="register-form" method="post" action="register_data.php">
+                <input type="text" placeholder="Nom d'utilisateur" name="uLogin" value=""/>
+                <input type="password" placeholder="Mot de passe" name="uPass" value=""/>
+                <input type="password" placeholder="Confirmer mot de passe" name="uConfPass" value=""/>
+                <input type="text" placeholder="Adresse email" name="uMail" value=""/>
                 <button type="submit">créer</button>
                 <p class="message">Déjà inscrit ? <a href="#">Se connecter</a></p>
             </form>
-            <form class="login-form" method="post" action="login_data_connection.php">
+            <form class="login-form" method="post" action="login_data.php">
                 <?php  if (isset($_GET['qErr']))
                 {
                     echo('<p class="alert alert-danger">' . $_GET['qErr'] . '</p>');
                 }
                 ?>
-                <input type="text" placeholder="Nom d'utilisateur" name="trueLogin" value="<?php echo @$_GET['trueLogin']; ?>"/>
-                <input type="password" placeholder="Mot de passe" name="truePass" value="<?php echo @$_GET['truePass']; ?>"/>
+                <input type="text" placeholder="Nom d'utilisateur" name="trueLogin" value=""/>
+                <input type="password" placeholder="Mot de passe" name="truePass" value=""/>
                 <button type="submit">se connecter</button>
                 <p class="message">Vous n'êtes pas inscrit ? <a href="#">Créer un compte</a></p>
             </form>
@@ -46,9 +44,4 @@
 <script type="text/javascript" src="./script/login.js"></script>
 </body>
 </html>
-<?php
-
-
-
-?>
 
