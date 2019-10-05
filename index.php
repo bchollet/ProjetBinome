@@ -25,8 +25,13 @@
                 <?php  if (isset($_GET['qErrRegister']))
                 {
                     switch ($_GET['qErrRegister']) {
+
                         case 1:
                             echo('<p>Au moins un des champs n\'a pas été rempli</p>');
+                            break;
+
+                        case 2:
+                            echo('<p>Les mots de passe ne correspondent pas</p>');
                             break;
                     }
                 }

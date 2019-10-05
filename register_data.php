@@ -9,10 +9,14 @@
 //Connexion à la DB
 include 'connectDB.php';
 
-if (empty($_POST['nuLogin']) || empty($_POST['nuPass']) || empty($_POST['nuMail']) || empty($_POST['nuConfPass']))
-{
+if (empty($_POST['nuLogin']) || empty($_POST['nuPass']) || empty($_POST['nuMail']) || empty($_POST['nuConfPass'])) {
     header("Location:index.php?qErrRegister=1");
 }
+
+elseif ($_POST['nuPass'] != $_POST['nuConfPass']) {
+    header("Location:index.php?qErrRegister=2");
+}
+
 else {
     $result = $myPDO->query("INSERT INTO users (id, username, password, email, admin) VALUES (null,'" . $_POST['nuLogin'] . "', '" . $_POST['nuPass'] . "', '" . $_POST['nuMail'] . "', 0)");
 }
