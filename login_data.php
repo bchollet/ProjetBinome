@@ -6,12 +6,12 @@
  * Time: 14:11
  */
 
+//Connexion à la DB
 include 'ConnectDB.php';
-$result = $myPDO->query("SELECT username FROM users where username = '" . $_POST['trueLogin'] . "'");
 
+$result = $myPDO->query("SELECT username FROM users where username = '" . $_POST['uLogin'] . "'");
 
-
-if (empty($_POST['trueLogin']) || empty($_POST['truePass']))
+if (empty($_POST['uLogin']) || empty($_POST['uPass']))
 {
     header("Location:index.php");
 }
@@ -30,7 +30,7 @@ if (empty($_POST['trueLogin']) || empty($_POST['truePass']))
 </head>
 <body>
     <p>
-       Bonjour <?= @$_POST['trueLogin'];?> ca va bro
+       Bonjour <?= @$_POST['uLogin'];?> ca va bro
         <br>
         <a href="index.php">
             <button>Retour menu</button>

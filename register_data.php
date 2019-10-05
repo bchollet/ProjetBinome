@@ -6,14 +6,15 @@
  * Time: 11:52
  */
 
+//Connexion à la DB
 include 'connectDB.php';
 
-if (empty($_POST['uLogin']) || empty($_POST['uPass']))
+if (empty($_POST['nuLogin']) || empty($_POST['nuPass']))
 {
     header("Location:index.php");
 }
 else {
-    $result = $myPDO->query("INSERT INTO users (id, username, password, email, admin) VALUES (null,'" . $_POST['uLogin'] . "', '" . $_POST['uPass'] . "', '" . $_POST['uMail'] . "', 0)");
+    $result = $myPDO->query("INSERT INTO users (id, username, password, email, admin) VALUES (null,'" . $_POST['nuLogin'] . "', '" . $_POST['nuPass'] . "', '" . $_POST['nuMail'] . "', 0)");
 }
 
 ?>
@@ -26,12 +27,12 @@ else {
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="./css/style.css">
-    <title>Blogito - Login_data</title>
+    <title>Blogito - Inscription</title>
     <script src="./jquery/jquery-3.4.1.min.js"></script>
 </head>
 <body>
     <p>
-       Bonjour <?= @$_POST['uLogin'];?> vous allez recevoir un mail pour valider votre compte
+       Bonjour <?= @$_POST['nuLogin'];?> vous allez recevoir un mail pour valider votre compte
         <br>
         <a href="index.php">
             <button>Retour menu</button>

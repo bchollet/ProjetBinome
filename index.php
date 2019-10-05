@@ -20,22 +20,24 @@
 <body>
     <div class="login-page">
         <div class="form">
+            <!-- les attributs "name" des <input> sont précédés de "nu" pour "New Users" -->
             <form class="register-form" method="post" action="register_data.php">
-                <input type="text" placeholder="Nom d'utilisateur" name="uLogin" value=""/>
-                <input type="password" placeholder="Mot de passe" name="uPass" value=""/>
-                <input type="password" placeholder="Confirmer mot de passe" name="uConfPass" value=""/>
-                <input type="text" placeholder="Adresse email" name="uMail" value=""/>
+                <input type="text" placeholder="Nom d'utilisateur" name="nuLogin" value=""/>
+                <input type="password" placeholder="Mot de passe" name="nuPass" value=""/>
+                <input type="password" placeholder="Confirmer mot de passe" name="nuConfPass" value=""/>
+                <input type="text" placeholder="Adresse email" name="nuMail" value=""/>
                 <button type="submit">créer</button>
                 <p class="message">Déjà inscrit ? <a href="#">Se connecter</a></p>
             </form>
+            <!-- les attributs "name" des <input> sont précédés de "u" pour "Users" -->
             <form class="login-form" method="post" action="login_data.php">
                 <?php  if (isset($_GET['qErr']))
                 {
                     echo('<p class="alert alert-danger">' . $_GET['qErr'] . '</p>');
                 }
                 ?>
-                <input type="text" placeholder="Nom d'utilisateur" name="trueLogin" value=""/>
-                <input type="password" placeholder="Mot de passe" name="truePass" value=""/>
+                <input type="text" placeholder="Nom d'utilisateur" name="uLogin" value=""/>
+                <input type="password" placeholder="Mot de passe" name="uPass" value=""/>
                 <button type="submit">se connecter</button>
                 <p class="message">Vous n'êtes pas inscrit ? <a href="#">Créer un compte</a></p>
             </form>
