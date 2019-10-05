@@ -22,6 +22,15 @@
         <div class="form">
             <!-- les attributs "name" des <input> sont précédés de "nu" pour "New Users" -->
             <form class="register-form" method="post" action="register_data.php">
+                <?php  if (isset($_GET['qErrRegister']))
+                {
+                    switch ($_GET['qErrRegister']) {
+                        case 1:
+                            echo('<p>Au moins un des champs n\'a pas été rempli</p>');
+                            break;
+                    }
+                }
+                ?>
                 <input type="text" placeholder="Nom d'utilisateur" name="nuLogin" value=""/>
                 <input type="password" placeholder="Mot de passe" name="nuPass" value=""/>
                 <input type="password" placeholder="Confirmer mot de passe" name="nuConfPass" value=""/>
