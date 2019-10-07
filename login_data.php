@@ -11,12 +11,33 @@ include 'ConnectDB.php';
 
 $result = $myPDO->query("SELECT username FROM users where username = '" . $_POST['uLogin'] . "'");
 
+//Création de ces variable pour faciliter le code
+$ulogin = @$_POST['uLogin'];
+$upass = @$_POST['uPass'];
+//Vérification si les champs sont vides
 if (empty($_POST['uLogin']) || empty($_POST['uPass']))
 {
     header("Location:index.php");
 }
 
+$result = $myPDO->query("SELECT password FROM users WHERE username ='" . $ulogin . "'");
+
+foreach ($result as $row){
+    //Debug
+    echo '<script>console.log("'.$row['password'].'")</script>';
+    //Création de la variable passwordDB contenant la ligne du mot de passe de l'user
+    $passwordDB = $row['password'];
+}
+
+
+if($passwordDB != $upass){
+    header("Location:index.php");
+    //Debug
+    echo '<script>console.log("'.$upass.'")</script>';
+}
 ?>
+
+
 <!doctype html>
 <html lang="fr">
 <head>
@@ -30,6 +51,7 @@ if (empty($_POST['uLogin']) || empty($_POST['uPass']))
 </head>
 <body>
     <p>
+
        Bonjour <?= @$_POST['uLogin'];?> ca va bro
         <br>
         <a href="index.php">
