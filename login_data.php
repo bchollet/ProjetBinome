@@ -14,6 +14,7 @@ $result = $myPDO->query("SELECT username FROM users where username = '" . $_POST
 //Création de ces variable pour faciliter le code
 $ulogin = @$_POST['uLogin'];
 $upass = @$_POST['uPass'];
+
 //Vérification si les champs sont vides
 if (empty($_POST['uLogin']) || empty($_POST['uPass']))
 {
@@ -29,8 +30,8 @@ foreach ($result as $row){
     $passwordDB = $row['password'];
 }
 
-
-if($passwordDB != $upass){
+//On vérifie que le mot de passe entré correspond au hash stocké dans la DB
+if(!password_verify($upass, $passwordDB)){
     header("Location:index.php");
     //Debug
     echo '<script>console.log("'.$upass.'")</script>';

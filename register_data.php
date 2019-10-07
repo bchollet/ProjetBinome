@@ -36,9 +36,10 @@ elseif (!filter_var($_POST['nuMail'], FILTER_VALIDATE_EMAIL)) {
     header("Location:index.php?qErrRegister=4");
 }
 
-//Si aucun conflit, on insère le nouvel utilisateur dans la base de donnée
+//Si aucun conflit, on insère le nouvel utilisateur dans la base de donnée en encryptant le mot de passe
 else {
-    $myPDO->query("INSERT INTO users (id, username, password, email, admin) VALUES (null,'" . $_POST['nuLogin'] . "', '" . $_POST['nuPass'] . "', '" . $_POST['nuMail'] . "', 0)");
+    $passwordHashed = password_hash($_POST['nuPass'], PASSWORD_BCRYPT);
+    $myPDO->query("INSERT INTO users (id, username, password, email, admin) VALUES (null,'" . $_POST['nuLogin'] . "', '" . $passwordHashed . "', '" . $_POST['nuMail'] . "', 0)");
 }
 
 ?>
