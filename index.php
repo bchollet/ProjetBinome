@@ -31,6 +31,10 @@
                             break;
 
                         case 2:
+                            echo('<p>Le mot de passe doit contenir 8 caractères dont: une majuscule, une minuscule, un chiffre et un caractère spécial (!, ?, #, @, $, ...) </p>');
+                            break;
+
+                        case 3:
                             echo('<p>Les mots de passe ne correspondent pas</p>');
                             break;
                     }

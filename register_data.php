@@ -9,14 +9,26 @@
 //Connexion à la DB
 include 'connectDB.php';
 
+// On vérifie la force de mot de passe. Ici, le mdp doit contenir une minuscule, une majuscule, un chiffre et un caractère spécial
+$nuPass = $_POST['nuPass'];
+$uppercase = preg_match('@[A-Z]@', $nuPass);
+$lowercase = preg_match('@[a-z]@', $nuPass);
+$number = preg_match('@[0-9]@', $nuPass);
+$specialChars = preg_match('@[^\w]@', $nuPass);
+
+//Vérification que les champs soient tous remplis
 if (empty($_POST['nuLogin']) || empty($_POST['nuPass']) || empty($_POST['nuMail']) || empty($_POST['nuConfPass'])) {
     header("Location:index.php?qErrRegister=1");
 }
-
-elseif ($_POST['nuPass'] != $_POST['nuConfPass']) {
+//Vérification que le mot de passe respectent les critères de sécurités + au minimum 8 caractères
+elseif (!$uppercase || !$lowercase || !$number || !$specialChars || strlen($nuPass) < 8) {
     header("Location:index.php?qErrRegister=2");
 }
-
+//Vérification que les deux mots de passent entrés soient identiques
+elseif ($_POST['nuPass'] != $_POST['nuConfPass']) {
+    header("Location:index.php?qErrRegister=3");
+}
+//Si aucun conflit, on insère le nouvel utilisateur dans la base de donnée
 else {
     $result = $myPDO->query("INSERT INTO users (id, username, password, email, admin) VALUES (null,'" . $_POST['nuLogin'] . "', '" . $_POST['nuPass'] . "', '" . $_POST['nuMail'] . "', 0)");
 }
