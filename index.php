@@ -37,6 +37,10 @@
                         case 3:
                             echo('<p>Les mots de passe ne correspondent pas</p>');
                             break;
+
+                        case 4:
+                            echo('<p>L\'adresse email entrée n\'est pas valide</p>');
+                            break;
                     }
                 }
                 ?>

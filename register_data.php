@@ -20,17 +20,25 @@ $specialChars = preg_match('@[^\w]@', $nuPass);
 if (empty($_POST['nuLogin']) || empty($_POST['nuPass']) || empty($_POST['nuMail']) || empty($_POST['nuConfPass'])) {
     header("Location:index.php?qErrRegister=1");
 }
+
 //Vérification que le mot de passe respectent les critères de sécurités + au minimum 8 caractères
 elseif (!$uppercase || !$lowercase || !$number || !$specialChars || strlen($nuPass) < 8) {
     header("Location:index.php?qErrRegister=2");
 }
+
 //Vérification que les deux mots de passent entrés soient identiques
 elseif ($_POST['nuPass'] != $_POST['nuConfPass']) {
     header("Location:index.php?qErrRegister=3");
 }
+
+//Vérification que l'adresse mail entrée ait un format valide (1 caractère avant et après le '@', la présence d'un '.' en deuxième partie ainsi qu'un caractère avant et après ce dernier
+elseif (!filter_var($_POST['nuMail'], FILTER_VALIDATE_EMAIL)) {
+    header("Location:index.php?qErrRegister=4");
+}
+
 //Si aucun conflit, on insère le nouvel utilisateur dans la base de donnée
 else {
-    $result = $myPDO->query("INSERT INTO users (id, username, password, email, admin) VALUES (null,'" . $_POST['nuLogin'] . "', '" . $_POST['nuPass'] . "', '" . $_POST['nuMail'] . "', 0)");
+    $myPDO->query("INSERT INTO users (id, username, password, email, admin) VALUES (null,'" . $_POST['nuLogin'] . "', '" . $_POST['nuPass'] . "', '" . $_POST['nuMail'] . "', 0)");
 }
 
 ?>
