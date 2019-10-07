@@ -26,6 +26,10 @@
                 {
                     switch ($_GET['qErrRegister']) {
 
+                        case 0:
+                            echo('<p>Ce login est déjà pris</p>');
+                            break;
+
                         case 1:
                             echo('<p>Au moins un des champs n\'a pas été rempli</p>');
                             break;
@@ -40,6 +44,10 @@
 
                         case 4:
                             echo('<p>L\'adresse email entrée n\'est pas valide</p>');
+                            break;
+
+                        default:
+                            echo('<p>Erreur non identifiée</p>');
                             break;
                     }
                 }

@@ -16,8 +16,18 @@ $lowercase = preg_match('@[a-z]@', $nuPass);
 $number = preg_match('@[0-9]@', $nuPass);
 $specialChars = preg_match('@[^\w]@', $nuPass);
 
+//Vérification que le login soit bien disponible. Si la requête retourne une valeur, alors le login est déjà pris
+$result = $myPDO->query("SELECT username FROM users WHERE username ='" . $_POST['nuLogin'] . "'");
+
+foreach ($result as $row) {
+    $loginTaken = $row['username'];
+}
+if ($loginTaken != null) {
+    header("Location:index.php?qErrRegister=0");
+}
+
 //Vérification que les champs soient tous remplis
-if (empty($_POST['nuLogin']) || empty($_POST['nuPass']) || empty($_POST['nuMail']) || empty($_POST['nuConfPass'])) {
+elseif (empty($_POST['nuLogin']) || empty($_POST['nuPass']) || empty($_POST['nuMail']) || empty($_POST['nuConfPass'])) {
     header("Location:index.php?qErrRegister=1");
 }
 
