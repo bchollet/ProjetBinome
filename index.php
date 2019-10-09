@@ -22,7 +22,8 @@
         <div class="form">
             <!-- les attributs "name" des <input> sont précédés de "nu" pour "New Users" -->
             <form class="register-form" method="post" action="register_data.php">
-                <?php  if (isset($_GET['qErrRegister']))
+                <?php
+                if (isset($_GET['qErrRegister']))
                 {
                     switch ($_GET['qErrRegister']) {
 
@@ -73,7 +74,14 @@
             </form>
         </div>
     </div>
-<script type="text/javascript" src="./script/login.js"></script>
+
+    <script type="text/javascript" src="./script/login.js"></script>
+    <?php
+    if (isset($_GET['qErrRegister'])) {
+        $redirectScript = "$('form').animate({height: 'toggle', opacity: 'toggle'}, 'slow');";
+        echo ('<script>' . $redirectScript . '</script>');
+    }
+    ?>
 </body>
 </html>
 

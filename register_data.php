@@ -17,17 +17,18 @@ $number = preg_match('@[0-9]@', $nuPass);
 $specialChars = preg_match('@[^\w]@', $nuPass);
 
 //Vérification que le login soit bien disponible. Si la requête retourne une valeur, alors le login est déjà pris
-$result = $myPDO->query("SELECT username FROM users WHERE username ='" . $_POST['nuLogin'] . "'");
+$result = $myPDO->query("SELECT username FROM users WHERE username ='" . $_POST['nuLogin'] . "';");
 
 foreach ($result as $row) {
     $loginTaken = $row['username'];
-}
-if ($loginTaken != null) {
-    header("Location:index.php?qErrRegister=0");
+    if ($loginTaken == $_POST['nuLogin']) {
+        echo '<script>console.log(' . $loginTaken . ')</script>';
+        header("Location:index.php?qErrRegister=0");
+    }
 }
 
 //Vérification que les champs soient tous remplis
-elseif (empty($_POST['nuLogin']) || empty($_POST['nuPass']) || empty($_POST['nuMail']) || empty($_POST['nuConfPass'])) {
+if (empty($_POST['nuLogin']) || empty($_POST['nuPass']) || empty($_POST['nuMail']) || empty($_POST['nuConfPass'])) {
     header("Location:index.php?qErrRegister=1");
 }
 
@@ -46,12 +47,55 @@ elseif (!filter_var($_POST['nuMail'], FILTER_VALIDATE_EMAIL)) {
     header("Location:index.php?qErrRegister=4");
 }
 
-//Si aucun conflit, on insère le nouvel utilisateur dans la base de donnée en encryptant le mot de passe
+//Si aucun conflit, on insère le nouvel utilisateur dans la base de donnée en encryptant le mot de passe et en lui attribuant un code d'activation
 else {
     $passwordHashed = password_hash($_POST['nuPass'], PASSWORD_BCRYPT);
-    $myPDO->query("INSERT INTO users (id, username, password, email, admin) VALUES (null,'" . $_POST['nuLogin'] . "', '" . $passwordHashed . "', '" . $_POST['nuMail'] . "', 0)");
-}
+    $userActivationCode = md5(rand());
+    $myPDO->query("INSERT INTO users (id, username, password, email, admin, verification_code) VALUES (null,'" . $_POST['nuLogin'] . "', '" . $passwordHashed . "', '" . $_POST['nuMail'] . "', 0, '" . $userActivationCode . "');");
 
+//    $to = $_POST['nuMail'];
+//    $subject = "Vérification de l'adresse mail";
+//    $verifURL = "http://localhost:81/Blogito/verifMail.php?actCode=" . $userActivationCode;
+//    $message = "
+//    <p>Coucou fdp " . $_POST['nuLogin'] . " !</p>
+//    <p>Pour confirmer votre inscription, veuillez cliquer sur ce lien: " . $verifURL . " </p>
+//    ";
+//
+//    $headers[] = 'MIME-Version: 1.0';
+//    $headers[] = 'Content-type: text/html; charset=iso-8859-1';
+
+
+    //mail($to, $subject, $message, implode("\r\n", $headers));
+
+//    $mail = new PHPMailer(true);
+//
+////Send mail using gmail
+//    if($send_using_gmail){
+//        $mail->IsSMTP(); // telling the class to use SMTP
+//        $mail->SMTPAuth = true; // enable SMTP authentication
+//        $mail->SMTPSecure = "ssl"; // sets the prefix to the servier
+//        $mail->Host = "smtp.gmail.com"; // sets GMAIL as the SMTP server
+//        $mail->Port = 465; // set the SMTP port for the GMAIL server
+//        $mail->Username = "your-gmail-account@gmail.com"; // GMAIL username
+//        $mail->Password = "your-gmail-password"; // GMAIL password
+//    }
+//
+////Typical mail data
+//    $mail->AddAddress($email, $name);
+//    $mail->SetFrom($email_from, $name_from);
+//    $mail->Subject = "My Subject";
+//    $mail->Body = "Mail contents";
+//
+//    try{
+//        $mail->Send();
+//        echo "Success!";
+//    } catch(Exception $e){
+//        //Something went bad
+//        echo "Fail - " . $mail->ErrorInfo;
+//    }
+
+
+}
 ?>
 
 <!doctype html>
