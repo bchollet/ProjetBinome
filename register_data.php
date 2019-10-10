@@ -9,6 +9,10 @@
 //Connexion à la DB
 include 'connectDB.php';
 
+//Appel de la libraire PHPMailer
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
 // On vérifie la force de mot de passe. Ici, le mdp doit contenir une minuscule, une majuscule, un chiffre et un caractère spécial
 $nuPass = $_POST['nuPass'];
 $uppercase = preg_match('@[A-Z]@', $nuPass);
@@ -51,50 +55,35 @@ elseif (!filter_var($_POST['nuMail'], FILTER_VALIDATE_EMAIL)) {
 else {
     $passwordHashed = password_hash($_POST['nuPass'], PASSWORD_BCRYPT);
     $userActivationCode = md5(rand());
+    $base_url = "http://localhost:81/Blogito/verifMail.php?code=" . $userActivationCode;    //On compose un lien contenant le code d'activation de l'utilisateur
     $myPDO->query("INSERT INTO users (id, username, password, email, admin, verification_code) VALUES (null,'" . $_POST['nuLogin'] . "', '" . $passwordHashed . "', '" . $_POST['nuMail'] . "', 0, '" . $userActivationCode . "');");
 
-//    $to = $_POST['nuMail'];
-//    $subject = "Vérification de l'adresse mail";
-//    $verifURL = "http://localhost:81/Blogito/verifMail.php?actCode=" . $userActivationCode;
-//    $message = "
-//    <p>Coucou fdp " . $_POST['nuLogin'] . " !</p>
-//    <p>Pour confirmer votre inscription, veuillez cliquer sur ce lien: " . $verifURL . " </p>
-//    ";
-//
-//    $headers[] = 'MIME-Version: 1.0';
-//    $headers[] = 'Content-type: text/html; charset=iso-8859-1';
+    require 'lib/PHPMailer/src/PHPMailer.php';
+    require 'lib/PHPMailer/src/Exception.php';
+    require 'lib/PHPMailer/src/SMTP.php';
 
+    $mail_body = "<p>Bonjour " . $_POST['nuLogin'] . ",</p>
+   <p>Veuillez ouvrir ce lien pour activer votre compte - " . $base_url ."
+   <p>Meilleures salutations,<br />Blogito</p>
+   ";
 
-    //mail($to, $subject, $message, implode("\r\n", $headers));
+    $mail = new PHPMailer;
+    $mail->IsSMTP();        //Sets Mailer to send message using SMTP
+    $mail->Host = 'mail.cpnv.ch';  //Sets the SMTP hosts of your Email hosting, this for Godaddy
+    $mail->Port = '25';        //Sets the default SMTP server port
+    $mail->SMTPSecure = '';       //Sets connection prefix. Options are "", "ssl" or "tls"
+    $mail->CharSet = 'UTF-8'; //Sets encoding
+    $mail->From = 'register@blogito.ch';   //Sets the From email address for the message
+    $mail->FromName = 'Blogito';     //Sets the From name of the message
+    $mail->AddAddress($_POST['nuMail'], $_POST['nuLogin']);  //Adds a "To" address
+    $mail->Subject = "Vérification de l'adresse mail";   //Sets the Subject of the message
+    $mail->Body = $mail_body;       //An HTML or plain text message body
+    $mail->IsHTML(true);    //Set text as HTML
 
-//    $mail = new PHPMailer(true);
-//
-////Send mail using gmail
-//    if($send_using_gmail){
-//        $mail->IsSMTP(); // telling the class to use SMTP
-//        $mail->SMTPAuth = true; // enable SMTP authentication
-//        $mail->SMTPSecure = "ssl"; // sets the prefix to the servier
-//        $mail->Host = "smtp.gmail.com"; // sets GMAIL as the SMTP server
-//        $mail->Port = 465; // set the SMTP port for the GMAIL server
-//        $mail->Username = "your-gmail-account@gmail.com"; // GMAIL username
-//        $mail->Password = "your-gmail-password"; // GMAIL password
-//    }
-//
-////Typical mail data
-//    $mail->AddAddress($email, $name);
-//    $mail->SetFrom($email_from, $name_from);
-//    $mail->Subject = "My Subject";
-//    $mail->Body = "Mail contents";
-//
-//    try{
-//        $mail->Send();
-//        echo "Success!";
-//    } catch(Exception $e){
-//        //Something went bad
-//        echo "Fail - " . $mail->ErrorInfo;
-//    }
-
-
+    if($mail->Send())        //Send an Email. Return true on success or false on error
+    {
+        $message = '<label class="text-success">Register Done, Please check your mail.</label>';
+    }
 }
 ?>
 
