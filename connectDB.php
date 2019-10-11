@@ -8,6 +8,6 @@
 
 
     //On utilise PHP Data Object (PDO) pour gérer la base de donnée SQLite
-    $myPDO = new PDO('sqlite:server/BlogitoDB.db');
+    $blogitoDB = new PDO('sqlite:server/BlogitoDB.db');
 
 ?>

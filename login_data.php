@@ -19,26 +19,17 @@ if (empty($ulogin) || empty($upass))
     header("Location:index.php");
 }
 
-$result = $myPDO->query("SELECT username, password FROM users where username = '" . $ulogin . "'");
+$result = $blogitoDB->query("SELECT username, password FROM users where username = '" . $ulogin . "'");
+$row = $result->fetch();
+$passwordDB = $row['password'];
 
 if(empty($result)) {
-    // Erreur username n'existe pas
-}
-
-// $passwordDB = $result['password'];
-
-foreach ($result as $row){
-    //Debug
-    echo '<script>console.log("'.$row['password'].'")</script>';
-    //Création de la variable passwordDB contenant la ligne du mot de passe de l'user
-    $passwordDB = $row['password'];
+    header("Location:index.php?qErrLog=true");
 }
 
 //On vérifie que le mot de passe entré correspond au hash stocké dans la DB
 if(!password_verify($upass, $passwordDB)){
-    header("Location:index.php");
-    //Debug
-    echo '<script>console.log("'.$upass.'")</script>';
+    header("Location:index.php?qErrLog=true");
 }
 ?>
 

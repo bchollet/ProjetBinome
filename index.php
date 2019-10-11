@@ -28,23 +28,23 @@
                     switch ($_GET['qErrRegister']) {
 
                         case 0:
-                            echo('<p>Ce login est déjà pris</p>');
+                            echo('<p>Au moins un des champs n\'a pas été rempli</p>');
                             break;
 
                         case 1:
-                            echo('<p>Au moins un des champs n\'a pas été rempli</p>');
+                            echo('<p>L\'adresse email entrée n\'est pas valide</p>');
                             break;
 
                         case 2:
                             echo('<p>Le mot de passe doit contenir 8 caractères dont: une majuscule, une minuscule, un chiffre et un caractère spécial (!, ?, #, @, $, ...) </p>');
                             break;
 
-                        case 3:
-                            echo('<p>Les mots de passe ne correspondent pas</p>');
+                        case 4:
+                            echo('<p>Ce login est déjà pris</p>');
                             break;
 
-                        case 4:
-                            echo('<p>L\'adresse email entrée n\'est pas valide</p>');
+                        case 3:
+                            echo('<p>Les mots de passe ne correspondent pas</p>');
                             break;
 
                         default:
@@ -62,9 +62,10 @@
             </form>
             <!-- les attributs "name" des <input> sont précédés de "u" pour "Users" -->
             <form class="login-form" method="post" action="login_data.php">
-                <?php  if (isset($_GET['qErr']))
+                <?php  if (isset($_GET['qErrLog']))
                 {
-                    echo('<p class="alert alert-danger">' . $_GET['qErr'] . '</p>');
+                    $_GET['qErrLog'] = "Le login et/ou le mot de passe ne sont pas correct";
+                    echo('<p class="alert alert-danger">' . $_GET['qErrLog'] . '</p>');
                 }
                 ?>
                 <input type="text" placeholder="Nom d'utilisateur" name="uLogin" value=""/>
