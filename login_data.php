@@ -9,19 +9,23 @@
 //Connexion à la DB
 include 'ConnectDB.php';
 
-$result = $myPDO->query("SELECT username FROM users where username = '" . $_POST['uLogin'] . "'");
-
 //Création de ces variable pour faciliter le code
 $ulogin = @$_POST['uLogin'];
 $upass = @$_POST['uPass'];
 
 //Vérification si les champs sont vides
-if (empty($_POST['uLogin']) || empty($_POST['uPass']))
+if (empty($ulogin) || empty($upass))
 {
     header("Location:index.php");
 }
 
-$result = $myPDO->query("SELECT password FROM users WHERE username ='" . $ulogin . "'");
+$result = $myPDO->query("SELECT username, password FROM users where username = '" . $ulogin . "'");
+
+if(empty($result)) {
+    // Erreur username n'existe pas
+}
+
+// $passwordDB = $result['password'];
 
 foreach ($result as $row){
     //Debug
