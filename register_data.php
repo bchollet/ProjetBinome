@@ -59,26 +59,32 @@ else {
     $base_url = "http://localhost:81/Blogito/verifMail.php?code=" . $userActivationCode;    //On compose un lien contenant le code d'activation de l'utilisateur
     $blogitoDB->query("INSERT INTO users (id, username, password, email, admin, verification_code) VALUES (null,'" . $nuLogin . "', '" . $passwordHashed . "', '" . $nuMail . "', 0, '" . $userActivationCode . "');");
 
+    //Appel des fichier pour PHPMailer
     require 'lib/PHPMailer/src/PHPMailer.php';
     require 'lib/PHPMailer/src/Exception.php';
     require 'lib/PHPMailer/src/SMTP.php';
 
+    //Contenu du mail
     $mail_body = "<p>Bonjour " . $nuLogin . ",</p>
     <p>Veuillez ouvrir ce lien pour activer votre compte - " . $base_url ."
     <p>Meilleures salutations,<br />Blogito</p>";
 
     $mail = new PHPMailer;
-    $mail->IsSMTP();        //Sets Mailer to send message using SMTP
-    $mail->Host = 'mail.cpnv.ch';  //Sets the SMTP hosts of your Email hosting, this for Godaddy
-    $mail->Port = '25';        //Sets the default SMTP server port
-    $mail->SMTPSecure = '';       //Sets connection prefix. Options are "", "ssl" or "tls"
-    $mail->CharSet = 'UTF-8'; //Sets encoding
-    $mail->From = 'register@blogito.ch';   //Sets the From email address for the message
-    $mail->FromName = 'Blogito';     //Sets the From name of the message
-    $mail->AddAddress("bastian.chollet@cpnv.ch", $nuLogin);  //Adds a "To" address
-    $mail->Subject = "Vérification de l'adresse email";   //Sets the Subject of the message
-    $mail->Body = $mail_body;       //An HTML or plain text message body
-    $mail->IsHTML(true);    //Set text as HTML
+    $mail->IsSMTP();        //Utilisation du protocole SMTP
+    $mail->SMTPAuth = true; //Authentification pour utiliser le serveur mail requise
+    $mail->SMTPSecure = 'ssl'; // transfer sécurisé avec le protocol ssl
+    $mail->Host = "smtp.gmail.com"; //Adresse du serveur mail
+    $mail->Port = 465; //Port du serveur mail
+    $mail->Username = "email.blogito@gmail.com"; //Nom d'utilisateur pour l'authentification sur le serveur mail
+    $mail->Password = 'M0t2Pa$$e'; //mot de passe associé
+    $mail->CharSet = 'UTF-8'; //Encodage du texte de l'email
+    $mail->From = 'email.blogito@gmail.com';   //Email affiché dans le message envoyé
+    $mail->FromName = 'Blogito';     //Identifiant apparaîssant sur le mail
+    $mail->AddAddress($nuMail, $nuLogin);  //Adresse d'envoi et username
+    $mail->Subject = "Vérification de l'adresse email";   //Sujet du mail
+    $mail->Body = $mail_body;       //Texte HTML du mail
+    $mail->IsHTML(true);    //Configure l'interprétation du HTML
+    $mail->Send(); //Envoi de l'email
 }
 ?>
 
