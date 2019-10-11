@@ -52,34 +52,34 @@ if ($row['username'] == $nuLogin) {
     header("Location:index.php?qErrRegister=4");
 }
 
-//Si aucun conflit, on insère le nouvel utilisateur dans la base de donnée en encryptant le mot de passe et en lui attribuant un code d'activation
-$passwordHashed = password_hash($_POST['nuPass'], PASSWORD_BCRYPT);
-$userActivationCode = md5(rand());
-$base_url = "http://localhost:81/Blogito/verifMail.php?code=" . $userActivationCode;    //On compose un lien contenant le code d'activation de l'utilisateur
-$blogitoDB->query("INSERT INTO users (id, username, password, email, admin, verification_code) VALUES (null,'" . $nuLogin . "', '" . $passwordHashed . "', '" . $nuMail . "', 0, '" . $userActivationCode . "');");
+else {
+    //Si aucun conflit, on insère le nouvel utilisateur dans la base de donnée en encryptant le mot de passe et en lui attribuant un code d'activation
+    $passwordHashed = password_hash($_POST['nuPass'], PASSWORD_BCRYPT);
+    $userActivationCode = md5(rand());
+    $base_url = "http://localhost:81/Blogito/verifMail.php?code=" . $userActivationCode;    //On compose un lien contenant le code d'activation de l'utilisateur
+    $blogitoDB->query("INSERT INTO users (id, username, password, email, admin, verification_code) VALUES (null,'" . $nuLogin . "', '" . $passwordHashed . "', '" . $nuMail . "', 0, '" . $userActivationCode . "');");
 
-require 'lib/PHPMailer/src/PHPMailer.php';
-require 'lib/PHPMailer/src/Exception.php';
-require 'lib/PHPMailer/src/SMTP.php';
+    require 'lib/PHPMailer/src/PHPMailer.php';
+    require 'lib/PHPMailer/src/Exception.php';
+    require 'lib/PHPMailer/src/SMTP.php';
 
-$mail_body = "<p>Bonjour " . $_POST['nuLogin'] . ",</p>
-<p>Veuillez ouvrir ce lien pour activer votre compte - " . $base_url ."
-<p>Meilleures salutations,<br />Blogito</p>
-";
+    $mail_body = "<p>Bonjour " . $nuLogin . ",</p>
+    <p>Veuillez ouvrir ce lien pour activer votre compte - " . $base_url ."
+    <p>Meilleures salutations,<br />Blogito</p>";
 
-$mail = new PHPMailer;
-$mail->IsSMTP();        //Sets Mailer to send message using SMTP
-$mail->Host = 'mail.cpnv.ch';  //Sets the SMTP hosts of your Email hosting, this for Godaddy
-$mail->Port = '25';        //Sets the default SMTP server port
-$mail->SMTPSecure = '';       //Sets connection prefix. Options are "", "ssl" or "tls"
-$mail->CharSet = 'UTF-8'; //Sets encoding
-$mail->From = 'register@blogito.ch';   //Sets the From email address for the message
-$mail->FromName = 'Blogito';     //Sets the From name of the message
-$mail->AddAddress($nuMail, $nuLogin);  //Adds a "To" address
-$mail->Subject = "Vérification de l'adresse mail";   //Sets the Subject of the message
-$mail->Body = $mail_body;       //An HTML or plain text message body
-$mail->IsHTML(true);    //Set text as HTML
-
+    $mail = new PHPMailer;
+    $mail->IsSMTP();        //Sets Mailer to send message using SMTP
+    $mail->Host = 'mail.cpnv.ch';  //Sets the SMTP hosts of your Email hosting, this for Godaddy
+    $mail->Port = '25';        //Sets the default SMTP server port
+    $mail->SMTPSecure = '';       //Sets connection prefix. Options are "", "ssl" or "tls"
+    $mail->CharSet = 'UTF-8'; //Sets encoding
+    $mail->From = 'register@blogito.ch';   //Sets the From email address for the message
+    $mail->FromName = 'Blogito';     //Sets the From name of the message
+    $mail->AddAddress("bastian.chollet@cpnv.ch", $nuLogin);  //Adds a "To" address
+    $mail->Subject = "Vérification de l'adresse email";   //Sets the Subject of the message
+    $mail->Body = $mail_body;       //An HTML or plain text message body
+    $mail->IsHTML(true);    //Set text as HTML
+}
 ?>
 
 <!doctype html>

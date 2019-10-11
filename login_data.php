@@ -19,15 +19,17 @@ if (empty($ulogin) || empty($upass))
     header("Location:index.php");
 }
 
+//Récupération des données (si existante) en utilisant le login entré par l'utilisateur
 $result = $blogitoDB->query("SELECT username, password FROM users where username = '" . $ulogin . "'");
 $row = $result->fetch();
 $passwordDB = $row['password'];
 
+//Vérification que la requête SQL retourne une valeur
 if(empty($result)) {
     header("Location:index.php?qErrLog=true");
 }
 
-//On vérifie que le mot de passe entré correspond au hash stocké dans la DB
+//Vérification que le mot de passe entré correspond au hash stocké dans la DB
 if(!password_verify($upass, $passwordDB)){
     header("Location:index.php?qErrLog=true");
 }
@@ -48,7 +50,7 @@ if(!password_verify($upass, $passwordDB)){
 <body>
     <p>
 
-       Bonjour <?= @$_POST['uLogin'];?> ca va bro
+       Bonjour <?= $ulogin;?> ca va bro
         <br>
         <a href="index.php">
             <button>Retour menu</button>
