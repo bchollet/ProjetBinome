@@ -20,9 +20,10 @@ if (empty($ulogin) || empty($upass))
 }
 
 //Récupération des données (si existante) en utilisant le login entré par l'utilisateur
-$result = $blogitoDB->query("SELECT username, password FROM users where username = '" . $ulogin . "'");
+$result = $blogitoDB->query("SELECT username, password, user_verified FROM users where username = '" . $ulogin . "'");
 $row = $result->fetch();
 $passwordDB = $row['password'];
+$userVerified = $row['user_verified'];
 
 //Vérification que la requête SQL retourne une valeur
 if(empty($result)) {
@@ -33,6 +34,11 @@ if(empty($result)) {
 if(!password_verify($upass, $passwordDB)){
     header("Location:index.php?qErrLog=true");
 }
+
+if($userVerified != 1) {
+    header("Location:index.php?qVerified=false");
+}
+
 ?>
 
 

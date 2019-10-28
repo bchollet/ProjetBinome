@@ -62,10 +62,18 @@
             </form>
             <!-- les attributs "name" des <input> sont précédés de "u" pour "Users" -->
             <form class="login-form" method="post" action="login_data.php">
-                <?php  if (isset($_GET['qErrLog']))
+                <?php
+                if (isset($_GET['qErrLog']))
                 {
                     $_GET['qErrLog'] = "Le login et/ou le mot de passe ne sont pas correct";
+
                     echo('<p class="alert alert-danger">' . $_GET['qErrLog'] . '</p>');
+                }
+                if (isset($_GET['qVerified']))
+                {
+                    $_GET['qVerified'] = "Votre adresse mail n'est pas vérifiée";
+
+                    echo('<p class="alert alert-danger">' . $_GET['qVerified'] . '</p>');
                 }
                 ?>
                 <input type="text" placeholder="Nom d'utilisateur" name="uLogin" value=""/>
