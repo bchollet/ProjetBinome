@@ -18,4 +18,5 @@ $username = @$_POST['userToDelete'];
 $blogitoDB->query("DELETE FROM users WHERE username ='" . $username . "'");
 
 header("Location:admin.php");
+
 ?>
