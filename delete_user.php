@@ -9,7 +9,7 @@ include 'connectDB.php';
 include 'session_on.php';
 
 if ($_SESSION['admin'] == false) {
-    header("Location:index.php");
+    header("Location:login.php");
     exit();
 }
 

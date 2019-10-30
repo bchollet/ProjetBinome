@@ -11,11 +11,11 @@ include 'session_on.php';
 
 
 if ($_SESSION['admin'] == false) {
-    header("Location:index.php");
+    header("Location:login.php");
     exit();
 }
 
-$result = $blogitoDB->query("SELECT username FROM users ORDER BY username");
+$result = $blogitoDB->query("SELECT username FROM users WHERE admin = 0 ORDER BY username");
 ?>
 
 <form method="post" action="delete_user.php" onsubmit="return confirm('Voulez-vous vraiment supprimer cet utilisateur ?')">
@@ -24,7 +24,7 @@ $result = $blogitoDB->query("SELECT username FROM users ORDER BY username");
     foreach ($result as $row) {
 
         $username = $row['username'];
-        echo '<a>' . $username . '</a>' . '<button type="submit" name="userToDelete" value=' . $username . '> X </button><br>';
+        echo '<a href="#">' . $username . '</a>' . '<button type="submit" name="userToDelete" value=' . $username . '> X </button><br>';
     }
     ?>
 

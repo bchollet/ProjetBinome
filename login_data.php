@@ -17,7 +17,7 @@ $upass = @$_POST['uPass'];
 //Vérification si les champs sont vides
 if (empty($ulogin) || empty($upass))
 {
-    header("Location:index.php?qErrLog=true");
+    header("Location:login.php?qErrLog=true");
     exit();
 }
 
@@ -31,19 +31,19 @@ $isAdmin = $row['admin'];
 
 //Vérification que la requête SQL retourne une valeur
 if(empty($row)) {
-    header("Location:index.php?qErrLog=true");
+    header("Location:login.php?qErrLog=true");
     exit();
 }
 
 //Vérification que le mot de passe entré correspond au hash stocké dans la DB
 if(!password_verify($upass, $passwordDB)){
-    header("Location:index.php?qErrLog=true");
+    header("Location:login.php?qErrLog=true");
     exit();
 }
 
 //Vérification que l'utilisateur existe
 if($userVerified != 1) {
-    header("Location:index.php?qErrVerif=true");
+    header("Location:login.php?qErrVerif=true");
     exit();
 }
 
@@ -80,7 +80,7 @@ else {
 
        Bonjour <?= $ulogin;?> ca va bro
         <br>
-        <a href="index.php">
+        <a href="login.php">
             <button>Retour menu</button>
         </a>
     </p>

@@ -9,7 +9,7 @@
 session_start();
 if(!isset($_SESSION['isLogged'])) {
     session_destroy();
-    header("Location:index.php?qErrAccess=true");
+    header("Location:login.php?qErrAccess=true");
     exit();
 }
 

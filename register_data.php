@@ -26,25 +26,25 @@ $specialChars = preg_match('@[^\w]@', $nuPass);
 
 //Vérification que les champs soient tous remplis
 if (empty($nuLogin) || empty($nuPass) || empty($nuMail) || empty($nuConfPass)) {
-    header("Location:index.php?qErrRegister=0");
+    header("Location:login.php?qErrRegister=0");
     exit();
 }
 
 //Vérification que l'adresse mail entrée ait un format valide (1 caractère avant et après le '@', la présence d'un '.' en deuxième partie ainsi qu'un caractère avant et après ce dernier
 elseif (!filter_var($_POST['nuMail'], FILTER_VALIDATE_EMAIL)) {
-    header("Location:index.php?qErrRegister=1");
+    header("Location:login.php?qErrRegister=1");
     exit();
 }
 
 //Vérification que le mot de passe respectent les critères de sécurités + au minimum 8 caractères
 elseif (!$uppercase || !$lowercase || !$number || !$specialChars || strlen($nuPass) < 8) {
-    header("Location:index.php?qErrRegister=2");
+    header("Location:login.php?qErrRegister=2");
     exit();
 }
 
 //Vérification que les deux mots de passent entrés soient identiques
 elseif ($nuPass != $nuConfPass) {
-    header("Location:index.php?qErrRegister=3");
+    header("Location:login.php?qErrRegister=3");
     exit();
 }
 
@@ -53,7 +53,7 @@ $result = $blogitoDB->query("SELECT username FROM users WHERE username ='" . $nu
 $row = $result->fetch();
 
 if ($row['username'] == $nuLogin) {
-    header("Location:index.php?qErrRegister=4");
+    header("Location:login.php?qErrRegister=4");
     exit();
 }
 
@@ -108,7 +108,7 @@ else {
     <p>
        Bonjour <?= $nuLogin;?> vous allez recevoir un mail pour valider votre compte
         <br>
-        <a href="index.php">
+        <a href="login.php">
             <button>Retour menu</button>
         </a>
     </p>

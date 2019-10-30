@@ -16,6 +16,6 @@ echo 'Votre compte a été validé ! Vous pouvez désormais vous connecter en ut
 
 ?>
 
-<a href="index.php">
+<a href="login.php">
     <button>Retour menu</button>
 </a>
