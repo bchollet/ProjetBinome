@@ -75,12 +75,6 @@
 
                     echo('<p class="alert alert-danger">' . $_GET['qErrVerif'] . '</p>');
                 }
-                if (isset($_GET['qErrAccess']))
-                {
-                    $_GET['qErrAccess'] = "Vous devez vous connecter pour accéder à cette page";
-
-                    echo('<p class="alert alert-danger">' . $_GET['qErrAccess'] . '</p>');
-                }
                 ?>
                 <input type="text" placeholder="Nom d'utilisateur" name="uLogin" value=""/>
                 <input type="password" placeholder="Mot de passe" name="uPass" value=""/>
