@@ -65,15 +65,21 @@
                 <?php
                 if (isset($_GET['qErrLog']))
                 {
-                    $_GET['qErrLog'] = "Le login et/ou le mot de passe ne sont pas correct";
+                    $_GET['qErrLog'] = "Mot de passe ou login incorrect";
 
                     echo('<p class="alert alert-danger">' . $_GET['qErrLog'] . '</p>');
                 }
-                if (isset($_GET['qVerified']))
+                if (isset($_GET['qErrVerif']))
                 {
-                    $_GET['qVerified'] = "Votre adresse mail n'est pas vérifiée";
+                    $_GET['qErrVerif'] = "Votre adresse mail n'est pas vérifiée";
 
-                    echo('<p class="alert alert-danger">' . $_GET['qVerified'] . '</p>');
+                    echo('<p class="alert alert-danger">' . $_GET['qErrVerif'] . '</p>');
+                }
+                if (isset($_GET['qErrAccess']))
+                {
+                    $_GET['qErrAccess'] = "Vous devez vous connecter pour accéder à cette page";
+
+                    echo('<p class="alert alert-danger">' . $_GET['qErrAccess'] . '</p>');
                 }
                 ?>
                 <input type="text" placeholder="Nom d'utilisateur" name="uLogin" value=""/>

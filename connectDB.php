@@ -9,6 +9,5 @@
 
     //On utilise PHP Data Object (PDO) pour gérer la base de donnée SQLite
     $blogitoDB = new PDO('sqlite:server/BlogitoDB.db');
-    session_start();
 
 ?>

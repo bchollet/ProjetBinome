@@ -8,6 +8,7 @@
 
 //Connexion à la DB
 include 'ConnectDB.php';
+session_start();
 
 //Création de ces variable pour faciliter le code
 $ulogin = @$_POST['uLogin'];
@@ -16,7 +17,8 @@ $upass = @$_POST['uPass'];
 //Vérification si les champs sont vides
 if (empty($ulogin) || empty($upass))
 {
-    header("Location:index.php");
+    header("Location:index.php?qErrLog=true");
+    exit();
 }
 
 //Récupération des données (si existante) en utilisant le login entré par l'utilisateur
@@ -26,18 +28,23 @@ $passwordDB = $row['password'];
 $userVerified = $row['user_verified'];
 $isAdmin = $row['admin'];
 
+
 //Vérification que la requête SQL retourne une valeur
-if(empty($result)) {
+if(empty($row)) {
     header("Location:index.php?qErrLog=true");
+    exit();
 }
 
 //Vérification que le mot de passe entré correspond au hash stocké dans la DB
 if(!password_verify($upass, $passwordDB)){
     header("Location:index.php?qErrLog=true");
+    exit();
 }
 
+//Vérification que l'utilisateur existe
 if($userVerified != 1) {
-    header("Location:index.php?qVerified=false");
+    header("Location:index.php?qErrVerif=true");
+    exit();
 }
 
 //Attribution de la variable session au nom de l'utilisateur
@@ -45,11 +52,14 @@ $_SESSION['username'] = $row['username'];
 
 //Vérification si l'utilisateur est un admin.
 if($isAdmin == 1) {
-    header("Location:admin.php");
     $_SESSION['admin'] = true;
+    $_SESSION['isLogged'] = true;
+    header("Location:admin.php");
+    exit();
 }
 else {
     $_SESSION['admin'] = false;
+    $_SESSION['isLogged'] = true;
 }
 ?>
 
