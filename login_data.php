@@ -20,10 +20,11 @@ if (empty($ulogin) || empty($upass))
 }
 
 //Récupération des données (si existante) en utilisant le login entré par l'utilisateur
-$result = $blogitoDB->query("SELECT username, password, user_verified FROM users where username = '" . $ulogin . "'");
+$result = $blogitoDB->query("SELECT username, password, admin, user_verified FROM users where username = '" . $ulogin . "'");
 $row = $result->fetch();
 $passwordDB = $row['password'];
 $userVerified = $row['user_verified'];
+$isAdmin = $row['admin'];
 
 //Vérification que la requête SQL retourne une valeur
 if(empty($result)) {
@@ -39,6 +40,17 @@ if($userVerified != 1) {
     header("Location:index.php?qVerified=false");
 }
 
+//Attribution de la variable session au nom de l'utilisateur
+$_SESSION['username'] = $row['username'];
+
+//Vérification si l'utilisateur est un admin.
+if($isAdmin == 1) {
+    header("Location:admin.php");
+    $_SESSION['admin'] = true;
+}
+else {
+    $_SESSION['admin'] = false;
+}
 ?>
 
 
