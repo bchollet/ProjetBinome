@@ -2,6 +2,8 @@
 include 'ConnectDB.php';
 include 'session_on.php';
 
+$currentUser = $_SESSION['username'];
+
 ?>
 
 <!DOCTYPE HTML>
@@ -44,7 +46,7 @@ include 'session_on.php';
                 <div class="content">
                     <?php
 
-                    $result = $blogitoDB->query("SELECT pictureSrc FROM publications WHERE pages_id = 1");
+                    $result = $blogitoDB->query("SELECT users.username, publications.pictureSrc FROM users INNER JOIN publications on users.pages_id = publications.pages_id WHERE users.username ='" . $currentUser . "'");
 
                     foreach ($result as $row) {
 
