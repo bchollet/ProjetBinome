@@ -27,7 +27,8 @@ $currentUser = $_SESSION['username'];
         <ul>
             <li><a href="#"><span class="icon fa-home"></span></a></li>
             <li><a href="#" class="active"><span class="icon fa-camera-retro"></span></a></li>
-            <li><a href="#"><span class="icon fa-file-text-o"></span></a></li>
+            <li><a href="#"><span class="icon fas fa-plus"></span></a></li>
+            <li><a href="#"><span class="icon fas fa-sign-out"></span></a></li>
         </ul>
     </nav>
 
