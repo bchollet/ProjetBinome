@@ -10,37 +10,50 @@ if (@$_REQUEST['action'] == "add") {
 /////////////////////////
 //GET-DECLARE DIMENSIONS //
 
-    $dimension = getimagesize($userfile);
+    $dimension = getimagesize($userfile); //Retourne un tableau à deux valeur [0] = width, [1] = height
     $large_width = $dimension[0]; // GET PHOTO WIDTH
     $large_height = $dimension[1]; //GET PHOTO HEIGHT
-    $small_width = 120; // DECLARE THUMB WIDTH
-    $small_height = 90; // DECLARE THUMB HEIGHT
+    $small_width = 450; // DECLARE THUMB WIDTH
+    $small_height = 450; // DECLARE THUMB HEIGHT
+
+    // calculating the part of the image to use for thumbnail
+    if ($large_width > $large_height) {
+        $y = 0;
+        $x = ($large_width - $large_height) / 2;
+        $smallestSide = $large_height;
+    } else {
+        $x = 0;
+        $y = ($large_height - $large_width) / 2;
+        $smallestSide = $large_width;
+    }
+
 
 /////////////////////////
 //CHECK SIZE  //
 
-    if ($userfile_size > 102400) {
-        $error = 1;
-        $msg = "The photo is over 100kb. Please try again.";
-    }
+//    if ($userfile_size > 102400000000) {
+//        $error = 1;
+//        $msg = "The photo is over 100kb. Please try again.";
+//    }
 
 
 ////////////////////////////////
 // CHECK TYPE (IE AND OTHERS) //
 
-//    if ($userfile_type = "image/pjpeg") {
-        if ($userfile_type != "image/jpeg") {
-            $error = 1;
-            $msg = "The photo must be JPG";
-        }
+
+//    if ($userfile_type != "image/jpeg") {
+//        $error = 1;
+//        $msg = "The photo must be JPG";
 //    }
+
 
 //////////////////////////////
 //CHECK WIDTH/HEIGHT //
-    if ($large_width >= 6000 or $large_height >= 4000) {
-        $error = 1;
-        $msg = "The photo must be 600x400 pixels";
-    }
+//    if ($large_width >= 19200 or $large_height >= 10800) {
+//        $error = 1;
+//        $msg = "The photo must be less than 1920x1080 pixels";
+//    }
+
 
 ///////////////////////////////////////////
 //CREATE THUMB / UPLOAD THUMB AND PHOTO ///
@@ -50,7 +63,7 @@ if (@$_REQUEST['action'] == "add") {
         $image = $userfile_name; //if you want to insert it to the database
         $pic = imagecreatefromjpeg($userfile);
         $small = imagecreatetruecolor($small_width, $small_height);
-        imagecopyresampled($small, $pic, 0, 0, 0, 0, $small_width, $small_height, $large_width, $large_height);
+        imagecopyresampled($small, $pic, 0, 0, $x, $y, $small_width, $small_height, $large_width, $large_height);
         if (imagejpeg($small, "server/img/thumb" . $userfile_name, 100)) {
             $large = imagecreatetruecolor($large_width, $large_height);
             imagecopyresampled($large, $pic, 0, 0, 0, 0, $large_width, $large_height, $large_width, $large_height);
@@ -64,6 +77,7 @@ if (@$_REQUEST['action'] == "add") {
             $error = 1;
         }
     }
+
 //////////////////////////////////////////////
 
 /// If everything went right a photo (600x400) and
