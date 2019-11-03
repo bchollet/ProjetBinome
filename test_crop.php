@@ -7,12 +7,19 @@
  */
 //Your Image
 
+include 'ConnectDB.php';
+include 'session_on.php';
+
+$currentUser = $_SESSION['username'];
+
+
 if (@$_REQUEST['action'] == "add") {
 
     $userfile = $_FILES['photo']['tmp_name'];
     $userfile_name = $_FILES['photo']['name'];
     $userfile_size = $_FILES['photo']['size'];
     $userfile_type = $_FILES['photo']['type'];
+    $time = date('dFYhisA');
 
 //getting the image dimensions
     list($width, $height) = getimagesize($userfile);
@@ -33,14 +40,22 @@ if (@$_REQUEST['action'] == "add") {
 
     // copying the part into thumbnail
     $thumbSize = 450;
+    $thumbPath = "server/img/" . $currentUser . "/thumb/thumb" . $time . $userfile_name;
     $thumb = imagecreatetruecolor($thumbSize, $thumbSize);
     imagecopyresampled($thumb, $myImage, 0, 0, $x, $y, $thumbSize, $thumbSize, $smallestSide, $smallestSide);
-    imagejpeg($thumb, "server/img/thumb" . $userfile_name, 100);
+    imagejpeg($thumb, $thumbPath, 100);
 
     // Uploading normal-size image
+    $largePath = "server/img/" . $currentUser . "/large/img" . $time . $userfile_name;
     $large = imagecreatetruecolor($width, $height);
     imagecopyresampled($large, $myImage, 0, 0, 0, 0, $width, $height, $width, $height);
-    imagejpeg($large, "server/img" . $userfile_name, 100);
+    imagejpeg($large, $largePath, 100);
+
+    $result = $blogitoDB->query("SELECT pages_id FROM users WHERE username = '" . $currentUser . "'");
+    $row = $result->fetch();
+    $page_id = $row['pages_id'];
+
+    $blogitoDB->query("INSERT INTO publications VALUES (null, '" . $largePath. "'," . $page_id . " , '" . $thumbPath ."')");
 
 }
 ?>
@@ -52,5 +67,8 @@ if (@$_REQUEST['action'] == "add") {
     Select Photo: <input type="file" name="photo">
     <input type="submit" name="submit" value="CREATE THUMB AND UPLOAD">
 </form>
+<a href="login.php">
+    <button>Retour menu</button>
+</a>
 </body
 </html>
