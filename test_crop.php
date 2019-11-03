@@ -67,7 +67,7 @@ if (@$_REQUEST['action'] == "add") {
     Select Photo: <input type="file" name="photo">
     <input type="submit" name="submit" value="CREATE THUMB AND UPLOAD">
 </form>
-<a href="login.php">
+<?php echo "<a href='index.php?user=" . $currentUser  . "'>" ?>
     <button>Retour menu</button>
 </a>
 </body

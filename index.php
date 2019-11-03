@@ -47,13 +47,14 @@ $currentUser = $_SESSION['username'];
                 <div class="content">
                     <?php
 
-                    $result = $blogitoDB->query("SELECT users.username, publications.pictureSrc FROM users INNER JOIN publications on users.pages_id = publications.pages_id WHERE users.username ='" . $currentUser . "'");
+                    $result = $blogitoDB->query("SELECT users.username, publications.pictureSrc, publications.thumbSrc FROM users INNER JOIN publications on users.pages_id = publications.pages_id WHERE users.username ='" . $currentUser . "'");
 
                     foreach ($result as $row) {
 
+                        $thumb = $row['thumbSrc'];
                         $picture = $row['pictureSrc'];
                         echo '<div class="media all people">';
-                        echo '<a href="' . $picture . '"><img src="' . $picture . '" alt="" title="This right here is a caption."/></a>';
+                        echo '<a href="' . $picture . '"><img src="' . $thumb . '" alt="" title="This right here is a caption."/></a>';
                         echo '</div>';
 
                     }
