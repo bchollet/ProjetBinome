@@ -1,87 +1,62 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: bastian.chollet
+ * Date: 01.11.2019
+ * Time: 09:04
+ */
+//Your Image
+
+include 'ConnectDB.php';
+include 'session_on.php';
+
+$currentUser = $_SESSION['username'];
+
+
 if (@$_REQUEST['action'] == "add") {
 
     $userfile = $_FILES['photo']['tmp_name'];
     $userfile_name = $_FILES['photo']['name'];
     $userfile_size = $_FILES['photo']['size'];
     $userfile_type = $_FILES['photo']['type'];
-    $error = 0;
+    $time = date('dFYhisA');
 
-/////////////////////////
-//GET-DECLARE DIMENSIONS //
+//getting the image dimensions
+    list($width, $height) = getimagesize($userfile);
 
-    $dimension = getimagesize($userfile); //Retourne un tableau à deux valeur [0] = width, [1] = height
-    $large_width = $dimension[0]; // GET PHOTO WIDTH
-    $large_height = $dimension[1]; //GET PHOTO HEIGHT
-    $small_width = 450; // DECLARE THUMB WIDTH
-    $small_height = 450; // DECLARE THUMB HEIGHT
+//saving the image into memory (for manipulation with GD Library)
+    $myImage = imagecreatefromjpeg($userfile);
 
-    // calculating the part of the image to use for thumbnail
-    if ($large_width > $large_height) {
+// calculating the part of the image to use for thumbnail
+    if ($width > $height) {
         $y = 0;
-        $x = ($large_width - $large_height) / 2;
-        $smallestSide = $large_height;
+        $x = ($width - $height) / 2;
+        $smallestSide = $height;
     } else {
         $x = 0;
-        $y = ($large_height - $large_width) / 2;
-        $smallestSide = $large_width;
+        $y = ($height - $width) / 2;
+        $smallestSide = $width;
     }
 
+    // copying the part into thumbnail
+    $thumbSize = 450;
+    $thumbPath = "server/img/" . $currentUser . "/thumb/thumb" . $time . $userfile_name;
+    $thumb = imagecreatetruecolor($thumbSize, $thumbSize);
+    imagecopyresampled($thumb, $myImage, 0, 0, $x, $y, $thumbSize, $thumbSize, $smallestSide, $smallestSide);
+    imagejpeg($thumb, $thumbPath, 100);
 
-/////////////////////////
-//CHECK SIZE  //
+    // Uploading normal-size image
+    $largePath = "server/img/" . $currentUser . "/large/img" . $time . $userfile_name;
+    $large = imagecreatetruecolor($width, $height);
+    imagecopyresampled($large, $myImage, 0, 0, 0, 0, $width, $height, $width, $height);
+    imagejpeg($large, $largePath, 100);
 
-//    if ($userfile_size > 102400000000) {
-//        $error = 1;
-//        $msg = "The photo is over 100kb. Please try again.";
-//    }
+    $result = $blogitoDB->query("SELECT pages_id FROM users WHERE username = '" . $currentUser . "'");
+    $row = $result->fetch();
+    $page_id = $row['pages_id'];
 
+    $blogitoDB->query("INSERT INTO publications VALUES (null, '" . $largePath. "'," . $page_id . " , '" . $thumbPath ."')");
 
-////////////////////////////////
-// CHECK TYPE (IE AND OTHERS) //
-
-
-//    if ($userfile_type != "image/jpeg") {
-//        $error = 1;
-//        $msg = "The photo must be JPG";
-//    }
-
-
-//////////////////////////////
-//CHECK WIDTH/HEIGHT //
-//    if ($large_width >= 19200 or $large_height >= 10800) {
-//        $error = 1;
-//        $msg = "The photo must be less than 1920x1080 pixels";
-//    }
-
-
-///////////////////////////////////////////
-//CREATE THUMB / UPLOAD THUMB AND PHOTO ///
-
-    if ($error != 1) {
-
-        $image = $userfile_name; //if you want to insert it to the database
-        $pic = imagecreatefromjpeg($userfile);
-        $small = imagecreatetruecolor($small_width, $small_height);
-        imagecopyresampled($small, $pic, 0, 0, $x, $y, $small_width, $small_height, $large_width, $large_height);
-        if (imagejpeg($small, "server/img/thumb" . $userfile_name, 100)) {
-            $large = imagecreatetruecolor($large_width, $large_height);
-            imagecopyresampled($large, $pic, 0, 0, 0, 0, $large_width, $large_height, $large_width, $large_height);
-            if (imagejpeg($large, "server/img" . $userfile_name, 100)) {
-            } else {
-                $msg = "A problem has occured. Please try again.";
-                $error = 1;
-            }
-        } else {
-            $msg = "A problem has occured. Please try again.";
-            $error = 1;
-        }
-    }
-
-//////////////////////////////////////////////
-
-/// If everything went right a photo (600x400) and
-/// a thumb(120x90) were uploaded to the given folders
 }
 ?>
 
@@ -92,5 +67,8 @@ if (@$_REQUEST['action'] == "add") {
     Select Photo: <input type="file" name="photo">
     <input type="submit" name="submit" value="CREATE THUMB AND UPLOAD">
 </form>
+<?php echo "<a href='index.php?user=" . $currentUser  . "'>" ?>
+    <button>Retour menu</button>
+</a>
 </body
 </html>
