@@ -61,7 +61,7 @@ else {
     //Si aucun conflit, on insère le nouvel utilisateur dans la base de donnée en encryptant le mot de passe et en lui attribuant un code d'activation
     $passwordHashed = password_hash($_POST['nuPass'], PASSWORD_BCRYPT);
     $userActivationCode = md5(rand());
-    $base_url = "http://localhost:81/Blogito/verifMail.php?code=" . $userActivationCode;    //On compose un lien contenant le code d'activation de l'utilisateur
+    $base_url = "http://localhost/Blogito/verifMail.php?code=" . $userActivationCode;    //On compose un lien contenant le code d'activation de l'utilisateur
     $blogitoDB->query("INSERT INTO users (id, username, password, email, admin, verification_code) VALUES (null,'" . $nuLogin . "', '" . $passwordHashed . "', '" . $nuMail . "', 0, '" . $userActivationCode . "');");
 
     //Appel des fichier pour PHPMailer

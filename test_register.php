@@ -6,6 +6,13 @@
  * Time: 08:56
  */
 
+//Valeurs par défaut utilisées pour les test
+$defaultUsersInDB = array("Marie", "Jean", "Marc");
+$defaultUsername = "Pascal";
+$defaultPassword = 'Pa$$w0rd';
+$defaultEmail = "test@gmail.com";
+
+
 verifRegister_verifAllEntries_RegisterOK();
 echo '<br>';
 verifRegister_verifUsernameAvailable_UsernameUnavailable();
@@ -48,14 +55,11 @@ function verifRegister($usersInDB, $username, $password, $email){
 function verifRegister_verifAllEntries_RegisterOK(){
 
     //Arrange
-    $usersInDB = array("Marie", "Jean", "Marc");
-    $username = "Pascal";
-    $password = 'Pa$$w0rd';
-    $email = 'test@gmail.com';
+    global $defaultUsersInDB, $defaultUsername, $defaultPassword, $defaultEmail;
     $errExpected = 0;
 
     //Act
-    $errCalculated = verifRegister($usersInDB, $username, $password, $email);
+    $errCalculated = verifRegister($defaultUsersInDB, $defaultUsername , $defaultPassword, $defaultEmail);
 
     //Assert
     if ($errCalculated == $errExpected){
@@ -70,14 +74,12 @@ function verifRegister_verifAllEntries_RegisterOK(){
 function verifRegister_verifUsernameAvailable_UsernameUnavailable(){
 
     //Arrange
-    $usersInDB = array("Marie", "Jean", "Marc");
+    global $defaultUsersInDB, $defaultPassword, $defaultEmail;
     $username = "Marie";
-    $password = 'Pa$$w0rd';
-    $email = 'test@gmail.com';
     $errExpected = 1;
 
     //Act
-    $errCalculated = verifRegister($usersInDB, $username, $password, $email);
+    $errCalculated = verifRegister($defaultUsersInDB, $username, $defaultPassword, $defaultEmail);
 
     //Assert
     if ($errCalculated == $errExpected){
@@ -92,14 +94,12 @@ function verifRegister_verifUsernameAvailable_UsernameUnavailable(){
 function verifRegister_verifMailFormat_MailNotValid(){
 
     //Arrange
-    $usersInDB = array("Marie", "Jean", "Marc");
-    $username = "Pascal";
-    $password = 'Pa$$w0rd';
+    global $defaultUsersInDB, $defaultUsername, $defaultPassword;
     $email = 'testgmail.com';
     $errExpected = 2;
 
     //Act
-    $errCalculated = verifRegister($usersInDB, $username, $password, $email);
+    $errCalculated = verifRegister($defaultUsersInDB, $defaultUsername, $defaultPassword, $email);
 
     //Assert
     if ($errCalculated == $errExpected){
@@ -113,23 +113,21 @@ function verifRegister_verifMailFormat_MailNotValid(){
 function verifRegister_verifPasswordStrength_PasswordWeak(){
 
     //Arrange
-    $usersInDB = array("Marie", "Jean", "Marc");
-    $username = "Pascal";
+    global $defaultUsersInDB, $defaultUsername, $defaultEmail;
     $password = 'pa$$w0rd';
-    $email = 'test@gmail.com';
     $errExpected = 12;
 
     //Act
-    $errUppercase = verifRegister($usersInDB, $username, $password, $email);
+    $errUppercase = verifRegister($defaultUsersInDB, $defaultUsername, $password, $defaultEmail);
 
     $password = 'PA$$W0RD';
-    $errLowerCase = verifRegister($usersInDB, $username, $password, $email);
+    $errLowerCase = verifRegister($defaultUsersInDB, $defaultUsername, $password, $defaultEmail);
 
     $password = 'Pa$$word';
-    $errNumber = verifRegister($usersInDB, $username, $password, $email);
+    $errNumber = verifRegister($defaultUsersInDB, $defaultUsername, $password, $defaultEmail);
 
     $password = 'Pa$$w0';
-    $errSpecialChars = verifRegister($usersInDB, $username, $password, $email);
+    $errSpecialChars = verifRegister($defaultUsersInDB, $defaultUsername, $password, $defaultEmail);
 
     //Assert
     if (($errUppercase + $errLowerCase + $errNumber + $errSpecialChars) == $errExpected){
