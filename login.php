@@ -25,6 +25,7 @@
                 <?php
                 if (isset($_GET['qErrRegister']))
                 {
+                    //On affiche un message d'erreur différent selon l'erreur rencontrée à l'inscriptions
                     switch ($_GET['qErrRegister']) {
 
                         case 0:
@@ -63,6 +64,7 @@
             <!-- les attributs "name" des <input> sont précédés de "u" pour "Users" -->
             <form class="login-form" method="post" action="login_data.php">
                 <?php
+                //Un message d'erreur s'affiche dépendant de la variable récupérée dans l'URL
                 if (isset($_GET['qErrLog']))
                 {
                     $_GET['qErrLog'] = "Mot de passe ou login incorrect";

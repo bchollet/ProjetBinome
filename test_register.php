@@ -12,7 +12,7 @@ $defaultUsername = "Pascal";
 $defaultPassword = 'Pa$$w0rd';
 $defaultEmail = "test@gmail.com";
 
-
+//Appel des tests et de leur résultat (réussi ou non)
 verifRegister_verifAllEntries_RegisterOK();
 echo '<br>';
 verifRegister_verifUsernameAvailable_UsernameUnavailable();
@@ -21,6 +21,13 @@ verifRegister_verifMailFormat_MailNotValid();
 echo '<br>';
 verifRegister_verifPasswordStrength_PasswordWeak();
 
+//Cette fonction vérifie les informations entrées par l'utilisateurs lors de son inscription
+//Elle vérifie que le nom d'utilisateur soit disponible, que le mot de passe respecte des règles de sécurité et que l'adresse mail ait un format valide
+//  param $userInDB: Tableau contenant plusieurs username fictifs
+//  param $username: Nom d'utilisateur entré
+//  param $$password: Mot de passe entré
+//  param $$email: email entré
+//  return: un entier correspondant au type d'erreur rencontré. 0 = pas d'erreur
 function verifRegister($usersInDB, $username, $password, $email){
 
     $err = 0;
@@ -52,6 +59,8 @@ function verifRegister($usersInDB, $username, $password, $email){
     return $err;
 }
 
+//Test de la fonction verifRegister
+//Vérifie qu'aucune erreur n'est rencontrée lorsque toutes les entrées sont valides
 function verifRegister_verifAllEntries_RegisterOK(){
 
     //Arrange
@@ -71,6 +80,8 @@ function verifRegister_verifAllEntries_RegisterOK(){
     }
 }
 
+//Test de la fonction verifRegister
+//Vérifie que la bonne erreur est rencontrée lorsque le nom d'utilisateur entré existe déjà dans le tableau
 function verifRegister_verifUsernameAvailable_UsernameUnavailable(){
 
     //Arrange
@@ -91,6 +102,8 @@ function verifRegister_verifUsernameAvailable_UsernameUnavailable(){
     }
 }
 
+//Test de la fonction verifRegister
+//Vérifie que la bonne erreur est rencontrée lorsque le mail entré n'a pas un format valide
 function verifRegister_verifMailFormat_MailNotValid(){
 
     //Arrange
@@ -110,6 +123,9 @@ function verifRegister_verifMailFormat_MailNotValid(){
     }
 }
 
+//Test de la fonction verifRegister
+//Vérifie que la bonne erreur est rencontrée lorsque le mot de passe ne respecte pas les règles de sécurité établies
+//Toutes les règles de sécurité sont testées (1 minuscule, 1 majuscule, 1 chiffre, 1 caractère spécial, 8 caractère minimum)
 function verifRegister_verifPasswordStrength_PasswordWeak(){
 
     //Arrange

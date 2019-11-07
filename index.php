@@ -2,7 +2,7 @@
 include 'ConnectDB.php';
 include 'session_on.php';
 
-$currentUser = $_SESSION['username'];
+$currentUser = $_SESSION['username']; //Récupération du username connecté
 
 ?>
 
@@ -47,6 +47,7 @@ $currentUser = $_SESSION['username'];
                 <div class="content">
                     <?php
 
+                    //Récupération des images (large et miniature) contenues dans le répertoire de l'utilisateur connecté
                     $result = $blogitoDB->query("SELECT users.username, publications.pictureSrc, publications.thumbSrc FROM users INNER JOIN publications on users.pages_id = publications.pages_id WHERE users.username ='" . $currentUser . "'");
 
                     foreach ($result as $row) {
@@ -54,7 +55,9 @@ $currentUser = $_SESSION['username'];
                         $thumb = $row['thumbSrc'];
                         $picture = $row['pictureSrc'];
                         echo '<div class="media all people">';
-                        echo '<a href="' . $picture . '"><img src="' . $thumb . '" alt="" title="This right here is a caption."/></a>';
+
+                        //Sur la page s'affiche les miniature. Lorsqu'on clique sur une image, la version large s'affiche
+                        echo '<a href="' . $picture . '"><img src="' . $thumb . '" alt="" title=""/></a>';
                         echo '</div>';
 
                     }

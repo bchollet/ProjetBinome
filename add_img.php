@@ -12,22 +12,22 @@ include 'session_on.php';
 
 $currentUser = $_SESSION['username'];
 
-
 if (@$_REQUEST['action'] == "add") {
 
+    //Récupération des données relatives à l'image
     $userfile = $_FILES['photo']['tmp_name'];
     $userfile_name = $_FILES['photo']['name'];
     $userfile_size = $_FILES['photo']['size'];
     $userfile_type = $_FILES['photo']['type'];
-    $time = date('dFYhisA');
+    $time = date('dFYhisA'); //Récupération de la date au format "01 january 2019 12 00 30 PM" sans les espaces
 
-//getting the image dimensions
+    //Récupération des dimensions de l'image
     list($width, $height) = getimagesize($userfile);
 
-//saving the image into memory (for manipulation with GD Library)
+    //Enregistrement de l'image dans la mémoire
     $myImage = imagecreatefromjpeg($userfile);
 
-// calculating the part of the image to use for thumbnail
+    //On analyse les dimensions de l'image pour créer la miniature
     if ($width > $height) {
         $y = 0;
         $x = ($width - $height) / 2;
@@ -38,19 +38,20 @@ if (@$_REQUEST['action'] == "add") {
         $smallestSide = $width;
     }
 
-    // copying the part into thumbnail
+    //Création de la miniature et enregistrement de celle-ci dans le répertoire de l'utilisateur
     $thumbSize = 450;
     $thumbPath = "server/img/" . $currentUser . "/thumb/thumb" . $time . $userfile_name;
     $thumb = imagecreatetruecolor($thumbSize, $thumbSize);
     imagecopyresampled($thumb, $myImage, 0, 0, $x, $y, $thumbSize, $thumbSize, $smallestSide, $smallestSide);
     imagejpeg($thumb, $thumbPath, 100);
 
-    // Uploading normal-size image
+    //Upload de l'image large et enregistrement de celle-ci dans le répertoire de l'utilisateur
     $largePath = "server/img/" . $currentUser . "/large/img" . $time . $userfile_name;
     $large = imagecreatetruecolor($width, $height);
     imagecopyresampled($large, $myImage, 0, 0, 0, 0, $width, $height, $width, $height);
     imagejpeg($large, $largePath, 100);
 
+    //On insère le chemin d'accès de l'image et de sa miniature dans la base de donnée
     $result = $blogitoDB->query("SELECT pages_id FROM users WHERE username = '" . $currentUser . "'");
     $row = $result->fetch();
     $page_id = $row['pages_id'];

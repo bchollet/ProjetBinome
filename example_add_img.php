@@ -1,4 +1,9 @@
 <?php
+
+//////////////////
+/// CETTE PAGE SERT D'EXEMPLE POUR LE DEVELOPPEMENT DU SITE
+/// ELLE N'EST EN AUCUN CAS UTILISEE PAR CE DERNIER
+
 if (@$_REQUEST['action'] == "add") {
 
     $userfile = $_FILES['photo']['tmp_name'];

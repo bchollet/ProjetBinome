@@ -74,6 +74,7 @@ else {
     <p>Veuillez ouvrir ce lien pour activer votre compte - " . $base_url ."
     <p>Meilleures salutations,<br />Blogito</p>";
 
+    //Définition des paramètres PHPmailer
     $mail = new PHPMailer;
     $mail->IsSMTP();        //Utilisation du protocole SMTP
     $mail->SMTPAuth = true; //Authentification pour utiliser le serveur mail requise
